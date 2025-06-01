@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  app:
+    container_name: mulo-web-react
+    build: .
+    ports:
+      - "5173:5173"
+    restart: unless-stopped
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    networks:
+      - mulo-shared-net
+volumes:
+  node_modules:
+networks:
+  mulo-shared-net:
+    external: true
