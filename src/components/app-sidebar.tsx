@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   IconCamera,
   IconChartBar,
@@ -16,6 +15,7 @@ import {
   IconSettings,
   IconUsers,
 } from "@tabler/icons-react";
+import * as React from "react";
 
 import { NavDocuments } from "@/components/nav-documents";
 import { NavMain } from "@/components/nav-main";
@@ -30,14 +30,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuthStore } from "@/lib/stores/authStore";
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "https://github.com/shadcn.png",
-  },
   navMain: [
     {
       title: "Dashboard",
@@ -150,7 +145,7 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { isLoggedIn } = useAuth((state) => state);
+  const { session } = useAuthStore((state) => state);
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>
@@ -174,9 +169,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavDocuments items={data.documents} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
-      {isLoggedIn && (
+      {session && session.user && (
         <SidebarFooter>
-          <NavUser user={data.user} />
+          <NavUser
+            user={{
+              name: session.user.full_name,
+              avatar: session.user.avatar,
+              email: session.user.email,
+            }}
+          />
         </SidebarFooter>
       )}
     </Sidebar>

@@ -1,3 +1,3 @@
-export const DashboardHome = () => {
-  return <h1>Home</h1>;
-};
+export function DashboardHome() {
+  return <h1>Dashboard</h1>;
+}

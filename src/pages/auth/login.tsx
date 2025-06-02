@@ -6,9 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
@@ -18,20 +15,28 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import api from "@/lib/axiosInstance";
+import type { ErrorResponse } from "@/types/error.type";
+import { handleAxiosError } from "@/utils/handleAxiosError";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import { IconBrandGithub } from "@tabler/icons-react";
-import { NavLink } from "react-router";
+import { useForm } from "react-hook-form";
+import { NavLink, useLocation, useNavigate } from "react-router";
+import { toast } from "sonner";
+import { z } from "zod";
+import { GithubButton } from "./github-button";
+import { useAuthStore } from "@/lib/stores/authStore";
 
 const loginSchema = z.object({
-  email: z.string().min(1, {
-    message: "Email must be not empty.",
-  }),
-  password: z.string().min(1, {
-    message: "Password must be not empty.",
-  }),
+  email: z.string().min(1, "Email must be not empty."),
+  password: z.string().min(1, "Password must be not empty."),
 });
 
 export const Login = () => {
+  const { login } = useAuthStore((state) => state);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -41,14 +46,48 @@ export const Login = () => {
   });
 
   async function onSubmit(values: z.infer<typeof loginSchema>) {
-    console.log({ values });
+    try {
+      await api.post("/auth/login", {
+        email: values.email,
+        password: values.password,
+      });
+      const userRes = await api.get("/auth/me");
+      const { data: user } = userRes.data;
+
+      login({
+        user: {
+          id: user.id,
+          full_name: user.full_name,
+          email: user.email,
+          role: user.role,
+          avatar: user.image.src,
+        },
+      });
+
+      toast.success("Success", {
+        description: `Welcome back ${user.full_name}`,
+      });
+
+      navigate(from, { replace: true });
+    } catch (error) {
+      const handleError = handleAxiosError<ErrorResponse>(error);
+      if (handleError.code === 403) {
+        navigate(`/verification?email=${encodeURIComponent(values.email)}`);
+      } else {
+        toast.error("Ups", {
+          description: handleError.message,
+        });
+      }
+    }
   }
 
   return (
     <Card className="w-full max-w-sm mx-auto">
       <CardHeader>
         <CardTitle>Login</CardTitle>
-        <CardDescription>Enter your credentials</CardDescription>
+        <CardDescription>
+          Please enter your credentials to continue.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -112,14 +151,11 @@ export const Login = () => {
                   </span>
                 </div>
               </div>
-              <Button type="button" className="w-full" variant="secondary">
-                <IconBrandGithub />
-                Github
-              </Button>
+              <GithubButton />
               <div className="flex gap-x-1 text-sm justify-center">
                 <p>Don't have an account?</p>
                 <NavLink to="/register" className="text-primary font-medium">
-                  Signup
+                  Register
                 </NavLink>
               </div>
             </div>
