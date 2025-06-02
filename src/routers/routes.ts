@@ -1,3 +1,4 @@
+import { ErrorBoundary } from "@/components/error-boundary";
 import AppLayout from "@/layouts/app-layout";
 import AuthLayout from "@/layouts/auth-layout";
 import DashboardLayout from "@/layouts/dashboard-layout";
@@ -12,6 +13,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     Component: AppLayout,
+    ErrorBoundary: ErrorBoundary,
     children: [
       {
         Component: AuthLayout,
