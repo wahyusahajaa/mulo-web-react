@@ -24,7 +24,7 @@ import { useForm } from "react-hook-form";
 import { NavLink, useLocation, useNavigate } from "react-router";
 import { toast } from "sonner";
 import { z } from "zod";
-import { GithubButton } from "./github-button";
+import { GithubButton } from "../../../components/github-button";
 import { useAuthStore } from "@/lib/stores/authStore";
 
 const loginSchema = z.object({

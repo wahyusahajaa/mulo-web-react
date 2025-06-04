@@ -23,7 +23,7 @@ import { useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router";
 import { toast } from "sonner";
 import { z } from "zod";
-import { GithubButton } from "./github-button";
+import { GithubButton } from "../../../components/github-button";
 import type { ErrorResponse } from "@/types/error.type";
 
 const registerSchema = z

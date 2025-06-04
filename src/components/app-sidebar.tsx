@@ -1,15 +1,15 @@
+import brand from "@/assets/mulo.png";
 import {
   IconCamera,
-  IconChartBar,
   IconDashboard,
   IconDatabase,
   IconFileAi,
   IconFileDescription,
   IconFileWord,
-  IconFolder,
   IconHelp,
-  IconInnerShadowTop,
-  IconListDetails,
+  IconLibrary,
+  IconMicrophone2,
+  IconMusic,
   IconReport,
   IconSearch,
   IconSettings,
@@ -31,32 +31,33 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useAuthStore } from "@/lib/stores/authStore";
+import { NavLink } from "react-router";
 
 const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "#",
+      url: "/dashboard",
       icon: IconDashboard,
     },
     {
-      title: "Lifecycle",
-      url: "#",
-      icon: IconListDetails,
+      title: "Artists",
+      url: "/dashboard/artists",
+      icon: IconMicrophone2,
     },
     {
-      title: "Analytics",
-      url: "#",
-      icon: IconChartBar,
+      title: "Albums",
+      url: "/dashboard/albums",
+      icon: IconLibrary,
     },
     {
-      title: "Projects",
-      url: "#",
-      icon: IconFolder,
+      title: "Songs",
+      url: "/dashboard/songs",
+      icon: IconMusic,
     },
     {
-      title: "Team",
-      url: "#",
+      title: "Users",
+      url: "/dashboard/users",
       icon: IconUsers,
     },
   ],
@@ -148,23 +149,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { session } = useAuthStore((state) => state);
 
   return (
-    <Sidebar collapsible="offcanvas" {...props}>
-      <SidebarHeader>
+    <Sidebar collapsible="offcanvas" {...props} className="p-0">
+      <SidebarHeader className="border-b h-(--header-height) p-2">
         <SidebarMenu>
-          <SidebarMenuItem>
+          <SidebarMenuItem className="px-3">
             <SidebarMenuButton
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="#">
-                <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">Mulo</span>
-              </a>
+              <NavLink to={"/"} className="flex items-center gap-1">
+                <img src={brand} alt="mulo" width={24} height={24} />
+                <span className="text-base text-foreground">Mulo</span>
+              </NavLink>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="p-2">
         <NavMain items={data.navMain} />
         <NavDocuments items={data.documents} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
