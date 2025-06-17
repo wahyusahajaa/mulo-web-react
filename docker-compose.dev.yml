@@ -16,6 +16,7 @@ services:
       - mulo-shared-net
 volumes:
   node_modules:
+  
 networks:
   mulo-shared-net:
     external: true
