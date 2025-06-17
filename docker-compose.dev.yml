@@ -3,7 +3,9 @@ version: "3.9"
 services:
   app:
     container_name: mulo-web-react
-    build: .
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dev
     ports:
       - "5173:5173"
     restart: unless-stopped
