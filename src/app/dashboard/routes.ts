@@ -1,6 +1,7 @@
-import type { RouteObject } from "react-router";
-import DashboardPage from "./page";
 import DashboardLayout from "@/layouts/dashboard-layout";
+import type { RouteObject } from "react-router";
+import { DashboardDemoPage } from "../demo-page";
+import { artistRoute } from "./artists/routes";
 import { userRoute } from "./users/routes";
 
 export const dashboardRoute: RouteObject = {
@@ -9,8 +10,9 @@ export const dashboardRoute: RouteObject = {
   children: [
     {
       index: true,
-      Component: DashboardPage,
+      Component: DashboardDemoPage,
     },
     userRoute,
+    artistRoute,
   ],
 };

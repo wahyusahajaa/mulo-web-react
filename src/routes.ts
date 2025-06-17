@@ -1,10 +1,10 @@
 import { authRoute } from "@/app/auth/routes";
-import DashboardPage from "@/app/dashboard/page";
 import { dashboardRoute } from "@/app/dashboard/routes";
 import { ErrorBoundary } from "@/components/error-boundary";
 import AppLayout from "@/layouts/app-layout";
 import RootLayout from "@/layouts/root-layout";
 import { createBrowserRouter } from "react-router";
+import DashboardHome from "./app/page";
 
 const router = createBrowserRouter([
   {
@@ -18,7 +18,7 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            Component: DashboardPage,
+            Component: DashboardHome,
           },
           dashboardRoute,
         ],

@@ -1,17 +1,17 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import type { PaginateResponse, User } from "@/types/types";
+import type { Artist, PaginateResponse } from "@/types/types";
 import { IconLoader2 } from "@tabler/icons-react";
 import React from "react";
 import { Await, useLoaderData } from "react-router";
 
-export default function UserPage() {
-  const { usersPromise } = useLoaderData() as {
-    usersPromise: PaginateResponse<User[]>;
+export default function ArtistPage() {
+  const { artistsPromise } = useLoaderData() as {
+    artistsPromise: PaginateResponse<Artist[]>;
   };
 
   return (
     <>
-      <h1 className="text-2xl mb-2">Users</h1>
+      <h1 className="text-2xl mb-2">Artists</h1>
       <React.Suspense
         fallback={
           <div className="flex justify-center items-center">
@@ -20,10 +20,10 @@ export default function UserPage() {
         }
       >
         <Await
-          resolve={usersPromise}
+          resolve={artistsPromise}
           errorElement={<div>Oops</div>}
           children={(resolvedPromise) => (
-            <UsersLists users={resolvedPromise.data} />
+            <ArtistLists artists={resolvedPromise.data} />
           )}
         />
       </React.Suspense>
@@ -40,25 +40,22 @@ function getInitials(name: string): string {
   return initials.join("");
 }
 
-const UsersLists = ({ users }: { users: User[] }) => {
+const ArtistLists = ({ artists }: { artists: Artist[] }) => {
   return (
     <ul className="flex flex-col divide-y">
-      {users.map((user) => (
-        <li key={user.id} className="flex items-center gap-4 py-4 select-none">
+      {artists.map((artist) => (
+        <li
+          key={artist.id}
+          className="flex items-center gap-4 py-4 select-none"
+        >
           <Avatar className="h-12 w-12">
-            <AvatarImage src={user.image.src} />
-            <AvatarFallback>{getInitials(user.full_name)}</AvatarFallback>
+            <AvatarImage src={artist.image.src} />
+            <AvatarFallback>{getInitials(artist.name)}</AvatarFallback>
           </Avatar>
 
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full">
             <div>
-              <p className="text-sm font-semibold">{user.full_name}</p>
-              <p className="text-sm font-light text-muted-foreground">
-                {user.email}
-              </p>
-              <p className="text-sm font-light text-muted-foreground">
-                {user.username}
-              </p>
+              <p className="text-sm font-semibold">{artist.name}</p>
             </div>
           </div>
         </li>

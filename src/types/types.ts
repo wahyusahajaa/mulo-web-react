@@ -31,3 +31,10 @@ export type User = {
   image: Image;
   role: RoleValue;
 };
+
+export type Artist = {
+  id: number;
+  name: string;
+  image: Image;
+  slug: string;
+};
