@@ -4,7 +4,7 @@ import { ErrorBoundary } from "@/components/error-boundary";
 import AppLayout from "@/layouts/app-layout";
 import RootLayout from "@/layouts/root-layout";
 import { createBrowserRouter } from "react-router";
-import DashboardHome from "./app/page";
+import { DashboardDemoPage } from "./app/demo-page";
 
 const router = createBrowserRouter([
   {
@@ -18,7 +18,7 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            Component: DashboardHome,
+            Component: DashboardDemoPage,
           },
           dashboardRoute,
         ],
