@@ -6,6 +6,8 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.prod
+    env_file:
+      - .env.production
     expose:
       - "80"
     restart: always
